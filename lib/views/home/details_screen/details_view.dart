@@ -8,10 +8,10 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:diary_journal/views/home/details_screen/details_controller.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../create/local_widget/mood.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-
 
 class DetailsView extends StatelessWidget {
   final Note note;
@@ -187,121 +187,118 @@ class DetailsView extends StatelessWidget {
     }
 
     List<Mood> moods = [
-        Mood(
-          iconPath: 'assets/images/Awsome.png',
-          name: 'Awsome',
+      Mood(
+        iconPath: 'assets/images/Awsome.png',
+        name: 'Awsome',
+        size: 24,
+        color: ThemeColor.successColor,
+      ),
+      Mood(
+          iconPath: 'assets/images/Happy.png',
+          name: 'Happy',
           size: 24,
-          color: ThemeColor.successColor,
-        ),
-        Mood(
-            iconPath: 'assets/images/Happy.png',
-            name: 'Happy',
-            size: 24,
-            color: ThemeColor.happyColor),
-        Mood(
-          iconPath: 'assets/images/Neutral.png',
-          name: 'Neutral',
-          size: 24,
-          color: ThemeColor.nautralColor,
-        ),
-        Mood(
-          iconPath: 'assets/images/Bad.png',
-          name: 'Bad',
-          size: 24,
-          color: ThemeColor.badColor,
-        ),
-        Mood(
-          iconPath: 'assets/images/Awful.png',
-          name: 'Awful',
-          size: 24,
-          color: ThemeColor.awfulColor,
-        ),
-      ];
+          color: ThemeColor.happyColor),
+      Mood(
+        iconPath: 'assets/images/Neutral.png',
+        name: 'Neutral',
+        size: 24,
+        color: ThemeColor.nautralColor,
+      ),
+      Mood(
+        iconPath: 'assets/images/Bad.png',
+        name: 'Bad',
+        size: 24,
+        color: ThemeColor.badColor,
+      ),
+      Mood(
+        iconPath: 'assets/images/Awful.png',
+        name: 'Awful',
+        size: 24,
+        color: ThemeColor.awfulColor,
+      ),
+    ];
 
     Future<void> showColorPicker(BuildContext context, Mood mood) async {
-  Color pickerColor = mood.color;
+      Color pickerColor = mood.color;
 
-  await showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Pick a color'),
-        content: SingleChildScrollView(
-          child: ColorPicker(
-            pickerColor: pickerColor,
-            onColorChanged: (Color color) {
-              // Update the mood's color with the selected color
-              mood.color = color;
-            },
-            showLabel: true,
-            pickerAreaHeightPercent: 0.8,
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('Save'),
-          ),
-        ],
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Pick a color'),
+            content: SingleChildScrollView(
+              child: ColorPicker(
+                pickerColor: pickerColor,
+                onColorChanged: (Color color) {
+                  // Update the mood's color with the selected color
+                  mood.color = color;
+                },
+                showLabel: true,
+                pickerAreaHeightPercent: 0.8,
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Save'),
+              ),
+            ],
+          );
+        },
       );
-    },
-  );
-}
-
-
+    }
 
     Future<void> showMoodPicker(BuildContext context) async {
-          final selectedMood = await showModalBottomSheet<Mood>(
-            context: context,
-            builder: (BuildContext context) {
-              return ListView.builder(
-                itemCount: moods.length,
-                itemBuilder: (context, index) {
-                  final mood = moods[index];
-                  return ListTile(
-                    leading: GestureDetector(
-                      onTap: () {
-                        // Open color picker when the mood icon is tapped
-                        showColorPicker(context, mood);
-                      },
-                      child: ColorFiltered(
-                        colorFilter: ColorFilter.mode(
-                          mood.color,
-                          BlendMode.srcIn,
-                        ),
-                        child: Image.asset(
-                          mood.iconPath,
-                          width: 50,
-                          height: 50,
-                        ),
-                      ),
+      final selectedMood = await showModalBottomSheet<Mood>(
+        context: context,
+        builder: (BuildContext context) {
+          return ListView.builder(
+            itemCount: moods.length,
+            itemBuilder: (context, index) {
+              final mood = moods[index];
+              return ListTile(
+                leading: GestureDetector(
+                  onTap: () {
+                    // Open color picker when the mood icon is tapped
+                    showColorPicker(context, mood);
+                  },
+                  child: ColorFiltered(
+                    colorFilter: ColorFilter.mode(
+                      mood.color,
+                      BlendMode.srcIn,
                     ),
-                    title: Text(mood.name),
-                    onTap: () {
-                      // Update the selected mood in the controller
-                      detailsController.setSelectedMood(mood);
+                    child: Image.asset(
+                      mood.iconPath,
+                      width: 50,
+                      height: 50,
+                    ),
+                  ),
+                ),
+                title: Text(mood.name),
+                onTap: () {
+                  // Update the selected mood in the controller
+                  detailsController.setSelectedMood(mood);
 
-                      Navigator.of(context).pop(mood);
-                    },
-                  );
+                  Navigator.of(context).pop(mood);
                 },
               );
             },
           );
+        },
+      );
 
-          if (selectedMood != null) {
-            print("Selected Mood: ${selectedMood.name}");
-          }
-        }
-
+      if (selectedMood != null) {
+        print("Selected Mood: ${selectedMood.name}");
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -507,7 +504,20 @@ class DetailsView extends StatelessWidget {
                                         ),
                                 ),
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    List<String> shareTexts = [
+                                      'Title: ${detailsController.title}',
+                                      'Description: ${detailsController.description}'
+                                    ];
+                                    String shareText = shareTexts.join('\n\n');
+                                    if (note.imagePath != null &&
+                                        note.imagePath!.isNotEmpty) {
+                                      Share.shareFiles([note.imagePath!],
+                                          text: shareText);
+                                    } else {
+                                      Share.share(shareText);
+                                    }
+                                  },
                                   icon: Icon(
                                     Icons.share,
                                     color: ThemeColor.colorScheme.onSurface,

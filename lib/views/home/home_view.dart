@@ -8,13 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
-import 'note_model/note_model.dart';
+
 class HomeView extends StatelessWidget {
   HomeView({Key? key}) : super(key: key);
   final HomeController homeController = Get.put(HomeController());
   Future<void> fetchData() async {
     await homeController.fetchDataFromApi();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,33 +26,33 @@ class HomeView extends StatelessWidget {
       ),
       body: Column(
         children: [
-            Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  onTap: () {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      border: Border.all(color: Colors.grey.shade300),
-                    ),
-                    child: TextField(
-                      controller: homeController.searchController,
-                      onChanged: (value) {
-                        homeController.searchNotes(value);
-                      },
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search),
-                        hintText: 'Search...',
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                          vertical: 12.0,
-                        ),
-                      ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () {},
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: TextField(
+                  controller: homeController.searchController,
+                  onChanged: (value) {
+                    homeController.searchNotes(value);
+                  },
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    hintText: 'Search...',
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 12.0,
                     ),
                   ),
                 ),
               ),
+            ),
+          ),
           EasyDateTimeLine(
             initialDate: Get.put(HomeController()).selectedDate.value,
             onDateChange: (selectedDate) {
@@ -81,8 +82,7 @@ class HomeView extends StatelessWidget {
                     // itemCount: controller.notes.length,
                     // itemBuilder: (context, index) {
                     //   final note = controller.notes[index];
-                    
-                    
+
                     itemCount: homeController.filteredNotes.isNotEmpty
                         ? homeController.filteredNotes.length
                         : controller.notes.length,

@@ -353,6 +353,7 @@ class _JournalBoxState extends State<JournalBox> {
                             onPressed: () {
                               showMoodPicker(context);
                             },
+                            // ignore: unnecessary_null_comparison
                             icon: createController.selectedMood != null
                                 ? Container(
                                     decoration: BoxDecoration(
@@ -378,14 +379,14 @@ class _JournalBoxState extends State<JournalBox> {
                                     size: 24,
                                   ),
                           ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.share,
-                              color: ThemeColor.colorScheme.onSurface,
-                              size: 24,
-                            ),
-                          ),
+                          // IconButton(
+                          //   onPressed: () {},
+                          //   icon: Icon(
+                          //     Icons.share,
+                          //     color: ThemeColor.colorScheme.onSurface,
+                          //     size: 24,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
